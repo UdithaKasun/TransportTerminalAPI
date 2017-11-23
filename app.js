@@ -64,14 +64,10 @@ process.on('SIGINT', function () {
 });
 
 require('./models/User');
-require('./models/Drug');
-require('./models/DrugCategory');
-require('./models/Supplier');
-require('./models/Customer');
-require('./models/Manufacturer');
-require('./models/Prescription');
-require('./models/DrugRequest');
-require('./models/RequestPayment');
+require('./models/Passenger');
+require('./models/RegularTravelCard');
+require('./models/Ticket');
+require('./models/TourCard');
 require('./config/passport');
 
 app.use(require('./routes'));
