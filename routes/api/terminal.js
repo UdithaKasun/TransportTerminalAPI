@@ -5,6 +5,7 @@ var Passenger = mongoose.model('Passenger');
 var RegularCard = mongoose.model('RegularTravelCard');
 var User = mongoose.model('User');
 var auth = require('../auth');
+var terminalController = require('../../controllers/TerminalController');
 
 //Getting all drugs from the database
 router.get('/', auth.optional, function (req, res, next) {
@@ -39,13 +40,16 @@ router.get('/regularCard', auth.optional, function (req, res, next) {
   });
 
 //Add new drug to the database
-router.post('/', auth.optional, function (req, res, next) {
+router.post('/card', auth.optional, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     //if (!user) { return res.sendStatus(401); }
 
-    var passenger = new Passenger(req.body.passenger);
-    return passenger.save().then(function () {
-      return res.json( { status : "SUCCESS"});
+    var status = terminalController.createNewCard(req.body);
+    status.then(function(msg){
+        return res.json( { status : "SUCCESS"});
+    })
+    .catch(err => {
+        return res.json( { status : "FAILED"});
     });
   }).catch(next);
 });
