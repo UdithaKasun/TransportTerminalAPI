@@ -29,7 +29,6 @@ router.get('/passenger/:id', auth.optional, function (req, res, next) {
 //
 router.get('/passengers', auth.optional, function (req, res, next) {
     Passenger.find({})
-    .populate('passenger_card')
         .then(function (passengers) {
             return res.json({
                 passengers: passengers
