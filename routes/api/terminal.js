@@ -3,30 +3,70 @@ var mongoose = require('mongoose');
 var router = require('express').Router();
 var Passenger = mongoose.model('Passenger');
 var RegularCard = mongoose.model('RegularTravelCard');
+var TourCard = mongoose.model('TourTravelCard');
 var User = mongoose.model('User');
 var auth = require('../auth');
 var terminalController = require('../../controllers/TerminalController');
 
 //Getting all drugs from the database
 router.get('/passenger/:id', auth.optional, function (req, res, next) {
-  User.findById(req.payload.id).then(function (user) {
-    //if (!user) { return res.sendStatus(401); }
+    User.findById(req.payload.id).then(function (user) {
+        //if (!user) { return res.sendStatus(401); }
 
-    Passenger.findById(req.pa)
-      .then(function (passengers) {
-        if (!passengers) { return res.sendStatus(404); }
-        return res.json({
-            passengers: passengers
-        });
-      }).catch(next);
+        Passenger.findById(req.pa)
+            .then(function (passengers) {
+                if (!passengers) { return res.sendStatus(404); }
+                RegularCard.findById(function (cards) {
 
-  });
+                })
+                return res.json({
+                    passengers: passengers
+                });
+            }).catch(next);
+
+    });
+});
+
+//
+router.get('/passengers', auth.optional, function (req, res, next) {
+    User.findById(req.payload.id).then(function (user) {
+        //if (!user) { return res.sendStatus(401); }
+
+        Passenger.find({})
+            .then(function (passengers) {
+                if (!passengers) { return res.sendStatus(404); }
+
+                passengers.forEach(passenger => {
+                    RegularCard.findById(passenger.passenger_card, function (err, result){
+                        if(result != undefined){
+                            passenger.passenger_card = result;
+                        } 
+                    });     
+                });
+
+                passengers.forEach(passenger => {
+                    TourCard.findById(passenger.passenger_card, function (err, result){
+                        if(result != undefined){
+                            passenger.passenger_card = result;
+                        }
+                        console.log(result);
+                        console.log(passenger);
+                    });     
+                });
+
+                console.log(passengers);
+                return res.json({
+                    passengers: passengers
+                });
+            }).catch(next);
+
+    });
 });
 
 // router.get('/regularCard', auth.optional, function (req, res, next) {
 //     User.findById(req.payload.id).then(function (user) {
 //       //if (!user) { return res.sendStatus(401); }
-  
+
 //       RegularCard.find({})
 //         .populate('card_holder')
 //         .then(function (passengers) {
@@ -35,29 +75,29 @@ router.get('/passenger/:id', auth.optional, function (req, res, next) {
 //               passengers: passengers
 //           });
 //         }).catch(next);
-  
+
 //     });
 //   });
 
 //Add a new Card to Database
 router.post('/card', auth.optional, function (req, res, next) {
-  User.findById(req.payload.id).then(function (user) {
-    //if (!user) { return res.sendStatus(401); }
+    User.findById(req.payload.id).then(function (user) {
+        //if (!user) { return res.sendStatus(401); }
 
-    var cardCreationPromise = terminalController.createNewCard(req.body);
-    cardCreationPromise.then(function(msg){
-        return res.json(msg);
-    })
-    .catch(err => {
-        return res.json(msg).status(400);
-    });
-  }).catch(next);
+        var cardCreationPromise = terminalController.createNewCard(req.body);
+        cardCreationPromise.then(function (msg) {
+            return res.json(msg);
+        })
+            .catch(err => {
+                return res.json(err);
+            });
+    }).catch(next);
 });
 
 // router.post('/regularCard', auth.optional, function (req, res, next) {
 //     User.findById(req.payload.id).then(function (user) {
 //       //if (!user) { return res.sendStatus(401); }
-  
+
 //       var card = new RegularCard(req.body.card);
 //       return card.save().then(function () {
 //         return res.json( { status : "SUCCESS"});

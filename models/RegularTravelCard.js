@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 mongoose.promise = global.promise
 var Schema = mongoose.Schema;
+var extend = require('mongoose-schema-extend');
+var TravelCard = require('./TravelCard');
 
-var regularTravelCardSchema = new Schema({
-    card_holder : [{type: Schema.Types.ObjectId, ref: 'Passenger'}],
-    card_balance : Number,
-    card_issued_date:Date
+var regularTravelCardSchema = TravelCard.DBSchema.extend({
+    
 });
 
 module.exports = mongoose.model('RegularTravelCard',regularTravelCardSchema,'transport_regular_card');
