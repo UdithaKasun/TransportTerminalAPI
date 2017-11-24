@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 
 var tourCardSchema = new Schema({
     card_holder : [{type: Schema.Types.ObjectId, ref: 'Passenger'}],
-    card_id : String,
     card_balance : Number,
     card_issued_date:String,
     card_expiry_date:String

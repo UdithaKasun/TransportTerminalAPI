@@ -8,11 +8,11 @@ var auth = require('../auth');
 var terminalController = require('../../controllers/TerminalController');
 
 //Getting all drugs from the database
-router.get('/', auth.optional, function (req, res, next) {
+router.get('/passenger/:id', auth.optional, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     //if (!user) { return res.sendStatus(401); }
 
-    Passenger.find({})
+    Passenger.findById(req.pa)
       .then(function (passengers) {
         if (!passengers) { return res.sendStatus(404); }
         return res.json({
@@ -23,47 +23,47 @@ router.get('/', auth.optional, function (req, res, next) {
   });
 });
 
-router.get('/regularCard', auth.optional, function (req, res, next) {
-    User.findById(req.payload.id).then(function (user) {
-      //if (!user) { return res.sendStatus(401); }
+// router.get('/regularCard', auth.optional, function (req, res, next) {
+//     User.findById(req.payload.id).then(function (user) {
+//       //if (!user) { return res.sendStatus(401); }
   
-      RegularCard.find({})
-        .populate('card_holder')
-        .then(function (passengers) {
-          if (!passengers) { return res.sendStatus(404); }
-          return res.json({
-              passengers: passengers
-          });
-        }).catch(next);
+//       RegularCard.find({})
+//         .populate('card_holder')
+//         .then(function (passengers) {
+//           if (!passengers) { return res.sendStatus(404); }
+//           return res.json({
+//               passengers: passengers
+//           });
+//         }).catch(next);
   
-    });
-  });
+//     });
+//   });
 
-//Add new drug to the database
+//Add a new Card to Database
 router.post('/card', auth.optional, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     //if (!user) { return res.sendStatus(401); }
 
-    var status = terminalController.createNewCard(req.body);
-    status.then(function(msg){
-        return res.json( { status : "SUCCESS"});
+    var cardCreationPromise = terminalController.createNewCard(req.body);
+    cardCreationPromise.then(function(msg){
+        return res.json(msg);
     })
     .catch(err => {
-        return res.json( { status : "FAILED"});
+        return res.json(msg).status(400);
     });
   }).catch(next);
 });
 
-router.post('/regularCard', auth.optional, function (req, res, next) {
-    User.findById(req.payload.id).then(function (user) {
-      //if (!user) { return res.sendStatus(401); }
+// router.post('/regularCard', auth.optional, function (req, res, next) {
+//     User.findById(req.payload.id).then(function (user) {
+//       //if (!user) { return res.sendStatus(401); }
   
-      var card = new RegularCard(req.body.card);
-      return card.save().then(function () {
-        return res.json( { status : "SUCCESS"});
-      });
-    }).catch(next);
-});
+//       var card = new RegularCard(req.body.card);
+//       return card.save().then(function () {
+//         return res.json( { status : "SUCCESS"});
+//       });
+//     }).catch(next);
+// });
 
 // //Getting by quering the drug id
 // router.get('/:drugid', auth.required, function (req, res, next) {
