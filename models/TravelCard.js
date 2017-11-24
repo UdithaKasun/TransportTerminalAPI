@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var travelCard = new Schema({
     card_balance : Number,
     card_issued_date:Date
-},{ collection : 'components', discriminatorKey : '_type' });
+},{ collection : 'Cards', discriminatorKey : '_type' });
 
 var CardModel = mongoose.model('TravelCard', travelCard);
 

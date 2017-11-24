@@ -6,6 +6,6 @@ var TravelCard = require('./TravelCard');
 
 var tourCardSchema = TravelCard.DBSchema.extend({
     card_expiry_date:Date
-} , {  discriminatorKey : '_type' });
+} , {  collection : "TourCard",discriminatorKey : '_type' });
 
 module.exports = mongoose.model('TourTravelCard',tourCardSchema,'transport_tour_card');

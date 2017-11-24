@@ -33,28 +33,8 @@ router.get('/passengers', auth.optional, function (req, res, next) {
         //if (!user) { return res.sendStatus(401); }
 
         Passenger.find({})
+        .populate('passenger_card')
             .then(function (passengers) {
-                if (!passengers) { return res.sendStatus(404); }
-
-                passengers.forEach(passenger => {
-                    RegularCard.findById(passenger.passenger_card, function (err, result){
-                        if(result != undefined){
-                            passenger.passenger_card = result;
-                        } 
-                    });     
-                });
-
-                passengers.forEach(passenger => {
-                    TourCard.findById(passenger.passenger_card, function (err, result){
-                        if(result != undefined){
-                            passenger.passenger_card = result;
-                        }
-                        console.log(result);
-                        console.log(passenger);
-                    });     
-                });
-
-                console.log(passengers);
                 return res.json({
                     passengers: passengers
                 });

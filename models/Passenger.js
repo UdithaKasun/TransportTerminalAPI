@@ -7,15 +7,10 @@ var passengerSchema = new Schema({
     passenger_name:String,
     passenger_phone_number :String,
     passenger_card : {
-        type : Schema.Types.ObjectId,
-        ref : 'TravelCard',
-        asVirtual: "prop"
+        kind : String,
+        card_details : {type : Schema.Types.ObjectId, refPath: 'passenger_card.kind'}
     }
-});
-
-// register plugin 
-var populateExtended = require("mongoose-populate-extended")(mongoose);
-passengerSchema.plugin(populateExtended);
+},{collection : "Passengers"});
 
 module.exports = mongoose.model('Passenger',passengerSchema,'transport_Passenger');
 
