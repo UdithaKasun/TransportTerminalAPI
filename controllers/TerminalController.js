@@ -34,6 +34,7 @@ terminalController.createNewCard = function (details) {
             var tourCard = {};
             tourCard.card_balance = 0.00;
             tourCard.card_type = "TOUR";
+            tourCard.card_issued_date = new Date();
             tourCard.card_expiry_date = new Date(expiryDate);
             var tourCardDetails = new TravelCard(tourCard);
             tourCardDetails.save().then(function (savedCard) {

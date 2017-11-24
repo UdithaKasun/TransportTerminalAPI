@@ -8,37 +8,33 @@ var terminalController = require('../../controllers/TerminalController');
 
 //Getting all drugs from the database
 router.get('/passenger/:id', auth.optional, function (req, res, next) {
-    User.findById(req.payload.id).then(function (user) {
-        //if (!user) { return res.sendStatus(401); }
+    // User.findById(req.payload.id).then(function (user) {
+    //     //if (!user) { return res.sendStatus(401); }
 
-        Passenger.findById(req.pa)
-            .then(function (passengers) {
-                if (!passengers) { return res.sendStatus(404); }
-                RegularCard.findById(function (cards) {
+       
 
-                })
-                return res.json({
-                    passengers: passengers
-                });
-            }).catch(next);
+    // });
+    Passenger.findById(req.pa)
+    .then(function (passengers) {
+        if (!passengers) { return res.sendStatus(404); }
+        RegularCard.findById(function (cards) {
 
-    });
+        })
+        return res.json({
+            passengers: passengers
+        });
+    }).catch(next);
 });
 
 //
 router.get('/passengers', auth.optional, function (req, res, next) {
-    User.findById(req.payload.id).then(function (user) {
-        //if (!user) { return res.sendStatus(401); }
-
-        Passenger.find({})
-        .populate('passenger_card')
-            .then(function (passengers) {
-                return res.json({
-                    passengers: passengers
-                });
-            }).catch(next);
-
-    });
+    Passenger.find({})
+    .populate('passenger_card')
+        .then(function (passengers) {
+            return res.json({
+                passengers: passengers
+            });
+        }).catch(next);
 });
 
 // router.get('/regularCard', auth.optional, function (req, res, next) {
@@ -59,17 +55,13 @@ router.get('/passengers', auth.optional, function (req, res, next) {
 
 //Add a new Card to Database
 router.post('/card', auth.optional, function (req, res, next) {
-    User.findById(req.payload.id).then(function (user) {
-        //if (!user) { return res.sendStatus(401); }
-
-        var cardCreationPromise = terminalController.createNewCard(req.body);
-        cardCreationPromise.then(function (msg) {
-            return res.json(msg);
-        })
-            .catch(err => {
-                return res.json(err);
-            });
-    }).catch(next);
+    var cardCreationPromise = terminalController.createNewCard(req.body);
+    cardCreationPromise.then(function (msg) {
+        return res.json(msg);
+    })
+        .catch(err => {
+            return res.json(err);
+    });
 });
 
 // router.post('/regularCard', auth.optional, function (req, res, next) {
