@@ -6,7 +6,7 @@ var User = mongoose.model('User');
 var auth = require('../auth');
 var terminalController = require('../../controllers/TerminalController');
 
-//Getting all drugs from the database
+//Getting all passengers from the database
 
 router.get('/passengers', auth.optional, function (req, res, next) {
     Passenger.find({})
@@ -80,9 +80,7 @@ router.post('/cards/:id/topup', auth.optional, function (req, res, next) {
             res.json({
               status: true,
               passenger_name : user.passenger_name,
-              passenger_nic : user.passenger_nic,
-              passenger_phone_number : user.passenger_phone_number,
-              passenger_card : user.passenger_card,
+              passenger_card : user.passenger_card.card_balance,
             });
           }   
       });
