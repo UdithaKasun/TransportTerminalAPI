@@ -78,14 +78,14 @@ var transactionDetails = {
 
 terminalController.topUpCard = function (cardId,amount,method) {
     return cardTopupPromise = new Promise((resolve, reject) => {
-        Passenger.findById(cardId,function(result){
+        Passenger.findById(cardId).then(function(result){
             var transaction = {};
-            transaction.transaction_id = "TRAN_" + new Date().getTime();
             transaction.transaction_date = new Date();
             transaction.transaction_amount = amount;
             transaction.transaction_method = method;
             transaction.transaction_status = "COMPLETED";
             result.passenger_card.card_transactions.push(transaction);
+            result.passenger_card.card_balance += amount;
             result.save()
             .then(function (drug) {
                 resolve({status : "SUCCESS" });

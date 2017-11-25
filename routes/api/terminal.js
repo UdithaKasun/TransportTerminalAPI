@@ -51,9 +51,9 @@ router.get('/cards/:id/balance', auth.optional, function (req, res, next) {
 });
 
 //Top Up Card By Id
-router.post('/card/:id/topup', auth.optional, function (req, res, next) {
-    var cardTopupPromise = terminalController.
-    cardCreationPromise.then(function (msg) {
+router.post('/cards/:id/topup', auth.optional, function (req, res, next) {
+    var cardTopupPromise = terminalController.topUpCard(req.params.id,req.body.amount,req.body.method)
+    cardTopupPromise.then(function (msg) {
         return res.json(msg);
     })
         .catch(err => {
