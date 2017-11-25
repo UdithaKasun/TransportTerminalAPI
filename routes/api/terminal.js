@@ -18,7 +18,7 @@ router.get('/passengers', auth.optional, function (req, res, next) {
 });
 
 //Add a new Card to Database
-router.post('/card', auth.optional, function (req, res, next) {
+router.post('/cards', auth.optional, function (req, res, next) {
     var cardCreationPromise = terminalController.createNewCard(req.body);
     cardCreationPromise.then(function (msg) {
         return res.json(msg);

@@ -22,7 +22,7 @@ terminalController.createNewCard = function (details) {
 
         var passenger = new Passenger(details);
         passenger.save().then(function (savedPassenger) {
-            resolve({ status : "COMPLETE" , operation : "PASSENGER_CREATED"});
+            resolve({ status : "COMPLETE" , operation : "PASSENGER_CREATED" , Id : savedPassenger._id});
         }).catch(function(error) {
             reject({ status : "FAILED" , operation : "PASSENGER_CREATION_FAILED"});
         });
