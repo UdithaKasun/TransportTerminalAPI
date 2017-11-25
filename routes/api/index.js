@@ -2,8 +2,9 @@ var router = require('express').Router();
 
 router.use('/', require('./users'));
 router.use('/terminal', require('./terminal'));
-router.use('/terminal/driver', require('./driver'));
-router.use('/terminal/bus', require('./bus'));
+router.use('/driver', require('./driver'));
+router.use('/bus', require('./bus'));
+router.use('/ride', require('./ride'));
 
 router.use(function(err, req, res, next){
   if(err.name === 'ValidationError'){

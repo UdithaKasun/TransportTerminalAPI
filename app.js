@@ -69,6 +69,7 @@ require('./models/Ticket');
 require('./models/Driver')
 require('./config/passport');
 require('./models/Bus')
+require('./models/Ride')
 
 app.use(require('./routes'));
 
