@@ -28,6 +28,17 @@ router.post('/cards', auth.optional, function (req, res, next) {
     });
 });
 
+//Reduce Amount Mobile Implementation
+router.post('/cards/balance', auth.optional, function (req, res, next) {
+    var cardCreationPromise = terminalController.reduceAmount(req.body.card_id,req.body.amount);
+    cardCreationPromise.then(function (msg) {
+        return res.json(msg);
+    })
+        .catch(err => {
+            return res.json(err);
+    });
+});
+
 //Get Card By Id
 router.get('/cards/:id', auth.optional, function (req, res, next) {
     var passengerPromise = terminalController.getPassengerDetails(req.params.id);

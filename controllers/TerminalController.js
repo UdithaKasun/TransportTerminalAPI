@@ -99,4 +99,21 @@ terminalController.topUpCard = function (cardId,amount,method) {
     });
 }
 
+terminalController.reduceAmount = function (cardId,amount) {
+    return cardReducePromise = new Promise((resolve, reject) => {
+        Passenger.findById(cardId).then(function(result){
+            result.passenger_card.card_balance -= amount;
+            result.save()
+            .then(function (result) {
+                resolve({status : "SUCCESS" });
+            }).catch(function(error) {
+                reject({ status : "FAILED" });
+            });
+        })
+        .catch(function(error) {
+            reject({ status : "FAILED" });
+        });
+    });
+}
+
 module.exports = terminalController;
