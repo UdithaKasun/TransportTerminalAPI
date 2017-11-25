@@ -153,4 +153,31 @@ router.post('/card', auth.optional, function (req, res, next) {
 //   });
 // });
 
+
+ //get passenger details and travel card details for android app
+ router.post('/passenger', function(req, res) {
+    
+      // find the passenger
+      Passenger.findOne({
+        _id: req.body.id
+      })
+      .populate('bus_details')
+      .then( function(user) {
+    
+        if (!user) {
+          res.json({ status: false, message: 'Passenger not found.' });
+        } else {
+    
+            // if passenger found return the passenger and card information
+            res.json({
+              status: true,
+              passenger_name : user.passenger_name,
+              passenger_nic : user.passenger_nic,
+              passenger_phone_number : user.passenger_phone_number,
+              passenger_card : user.passenger_card,
+            });
+          }   
+      });
+    });
+
 module.exports = router;
